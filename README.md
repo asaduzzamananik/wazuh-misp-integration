@@ -1,7 +1,7 @@
 # Integrating Wazuh and MISP for Proactive Threat Detection
 
 The **Malware Information Sharing Platform (MISP)** operates on the fundamental theory that collaborative, structured, and timely sharing of Threat Intelligence (TI) significantly enhances the global defense against cyber threats. It transforms fragmented, raw threat data into actionable intelligence, moving organizations from reactive to proactive security postures.
----
+
 **Core Principles of MISP**
 MISP's functionality is built upon the following three theoretical pillars:
 
