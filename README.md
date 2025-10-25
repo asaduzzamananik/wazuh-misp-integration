@@ -153,8 +153,8 @@ After logging in, you can explore the dashboard, create events, and use the MISP
 
 ## MISP Auth key :
 
-  1 Login to your MISP account 
-  2 Click "Administration" and then click "List Auth Keys"
+  1. Login to your MISP account 
+  2. Click "Administration" and then click "List Auth Keys"
 
 
 
