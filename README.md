@@ -7,14 +7,17 @@ The goal of this simulation is to integrate MISP threat intelligence with Wazuh 
 
 **key Goals:**
 
-	• Deploy a working MISP instance using Docker
-	• Enable threat intelligence ingestion and IOC management in MISP
-	• Configure Wazuh agents for real time file integrity monitoring
-	• Build and install a custom integration script for MISP hash lookups
-	• Create Wazuh rules to trigger alerts when file hashes match MISP data
-	• Test the setup using the EICAR standard antivirus test file
-	• Validate alert visibility in the Wazuh Dashboard and integration logs
+  - Deploy a working MISP instance using Docker
+  - Enable threat intelligence ingestion and IOC management in MISP
+  - Configure Wazuh agents for real time file integrity monitoring
+  - Build and install a custom integration script for MISP hash lookups
+  - Create Wazuh rules to trigger alerts when file hashes match MISP data
+  - Test the setup using the EICAR standard antivirus test file
+  - Validate alert visibility in the Wazuh Dashboard and integration logs
 
+---
+	
+## Background Theory
 The **Malware Information Sharing Platform (MISP)** operates on the fundamental theory that collaborative, structured, and timely sharing of Threat Intelligence (TI) significantly enhances the global defense against cyber threats. It transforms fragmented, raw threat data into actionable intelligence, moving organizations from reactive to proactive security postures.
 
 **Core Principles of MISP**
@@ -31,3 +34,32 @@ MISP's functionality is built upon the following three theoretical pillars:
 **Collective Sharing**:
 	- Facilitates secure, controlled exchange of TI among trusted partners.
 	- Uses standards like STIX/TAXII and granular access controls for collaborative defense.
+
+---
+
+## Lab Setup
+Network Settings for All VMs
+
+**Select Adapter 1**:
+
+  - Check Enable Network Adapter
+  - Attached to: NAT Network
+  - Adapter Type: Intel PRO/1000 MT Desktop (default is fine)
+  - Cable Connected: Checked
+
+Repeat the same for **Windows VM**.
+Repeat the same for **Ubuntu VM**.
+
+## Ubuntu(MISP) Network Config
+<img width="720" height="562" alt="image" src="https://github.com/user-attachments/assets/f55334b7-e52b-461f-ab13-0cd19c29fa7e" />
+
+## Ubuntu(Wazuh Agent) Network Config
+<img width="716" height="559" alt="image" src="https://github.com/user-attachments/assets/e2fa2c85-9658-47c1-98f8-e0e8fb3802a2" />
+
+## Windows 10(Wazuh Agent) Network Config
+<img width="714" height="566" alt="image" src="https://github.com/user-attachments/assets/ef3bdc2d-7eb5-4824-bf4b-cb103e6cff07" />
+
+
+
+
+	
