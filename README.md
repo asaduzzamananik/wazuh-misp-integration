@@ -63,11 +63,10 @@ Repeat the same for **Ubuntu VM**.
 ## Virtual Machines (VirtualBox)
 | **VM NAME**  | **Network Adapter** | **Purpose** | **Tools Used** |
 |---------------|-------------|---------------|---------------|
-| **Ubuntu Server (Wazuh Manager)**    | **Adapter 1: NAT Netwoek**  | Internet access for updates and MISP API connectivity  | Wazuh Manager, custom MISP integration script, Linux CLI |                
-| **Windows 10**    | **Adapter 1: NAT**   | Internet (optional, to simulate a real user) | For browser use and tool installation |               
-| **Ubuntu**        | **Adapter 1: NAT**   | Internet  | For browser use and tool installation |
+| **Ubuntu Server (Wazuh Manager)**    | **Adapter 1: NAT Network**  | Internet access for updates and MISP API connectivity  | Wazuh Manager, custom MISP integration script, Linux CLI, Syscheck alerts, log review |                
+| **Ubuntu Server (MISP Instance)**    | **Adapter 1: NAT Network**   | Docker image pulls and external feed sync |MISP (Docker), MySQL,MISP REST API access |               
+| **Windows 10 (Wazuh Agent)**        | **Adapter 1: NAT Network**   | Simulates real workstation with internet  | Wazuh Agent, PowerShell, file creation,EICAR test file |
             
-
 
 ---
 
