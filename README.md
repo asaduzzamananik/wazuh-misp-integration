@@ -6,7 +6,6 @@ The goal of this simulation is to integrate MISP threat intelligence with Wazuh 
 ---
 
 **key Goals:**
-
 	- Deploy a working MISP instance using Docker
 	- Enable threat intelligence ingestion and IOC management in MISP
 	- Configure Wazuh agents for real time file integrity monitoring
