@@ -60,6 +60,18 @@ Repeat the same for **Ubuntu VM**.
 <img width="714" height="566" alt="image" src="https://github.com/user-attachments/assets/ef3bdc2d-7eb5-4824-bf4b-cb103e6cff07" />
 
 
+## Virtual Machines (VirtualBox)
+| **VM NAME**  | **Network Adapter** | **Purpose** | **Tools Used** |
+|---------------|-------------|---------------|---------------|
+| **Ubuntu Server (Wazuh Manager)**    | **Adapter 1: NAT Netwoek**  | Internet access for updates and MISP API connectivity  | Wazuh Manager, custom MISP integration script, Linux CLI |
+|                  
+| **Windows 10**    | **Adapter 1: NAT**   | Internet (optional, to simulate a real user) | For browser use and tool installation |
+|                  
+| **Ubuntu**        | **Adapter 1: NAT**   | Internet  | For browser use and tool installation |
+|                
+
+
+---
 
 
 	
