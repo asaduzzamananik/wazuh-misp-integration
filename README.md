@@ -335,9 +335,9 @@ Download [Eicar.com](https://www.eicar.org/) file to the monitored directory.
 Now:-
   1. Open Notepad
     - Press Windows + R, type notepad, and press Enter.
-     
-    <img width="608" height="332" alt="image" src="https://github.com/user-attachments/assets/19af8c92-5ba4-40e0-b93c-9d971d5e7cbb" />
-
+<img width="608" height="332" alt="image" src="https://github.com/user-attachments/assets/3187393c-8696-4252-9a9e-7354cda159c9" />
+		  
+    
   3. Paste the EICAR test string
     - In Notepad paste the single line exactly as shown above. Do not add extra spaces, line breaks, or characters.
 
