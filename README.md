@@ -139,8 +139,22 @@ sudo docker compose up
   - Open  browser and go to:
       - https://YOUR_SERVER_IP
   - you’ll see a warning about SSL — click Advanced → Accept the Risk.
-The MISP login page will appear.
+  - The MISP login page will appear.
 
+<img width="975" height="375" alt="image" src="https://github.com/user-attachments/assets/469c23e3-1b10-433d-b5cd-b27009f1d292" />
+
+### Step 9: Log in to MISP
+Use the default credentials:
+  - Username: admin@admin.test
+  - Password: admin
+After logging in, you can explore the dashboard, create events, and use the MISP interface.
+
+<img width="1852" height="846" alt="image" src="https://github.com/user-attachments/assets/0e5db4fb-531b-401c-b122-0075aeb10f38" />
+
+## MISP Auth key :
+
+  1 Login to your MISP account 
+  2 Click "Administration" and then click "List Auth Keys"
 
 
 
