@@ -156,8 +156,24 @@ After logging in, you can explore the dashboard, create events, and use the MISP
   1. Login to your MISP account 
   2. Click "Administration" and then click "List Auth Keys"
 
+<img width="975" height="434" alt="image" src="https://github.com/user-attachments/assets/12779e5a-1d1b-4c81-ad37-d0f797329cc5" />
+<img width="975" height="448" alt="image" src="https://github.com/user-attachments/assets/f222e24b-a51d-48b3-8b36-52e109417955" />
+<img width="904" height="773" alt="image" src="https://github.com/user-attachments/assets/acfd9fe4-9334-423d-a6ae-89897127d59d" />
+<img width="894" height="393" alt="image" src="https://github.com/user-attachments/assets/d241e7d1-fb7b-4908-92bc-6147bad13e79" />
 
 
+
+## Wazuh and MISP integration
+**Wazuh Host Monitoring**
+
+**Goal: Detect suspicious activity from the Windows endpoint.**
+
+Steps:
+  - Install the Wazuh Agent on the Windows 10 machine
+  - Configure the agent to communicate with the Wazuh Manager on Ubuntu
+  - Enable file integrity monitoring for the selected directories
+  - Start and verify the agent service
+  - Confirm alerts in the Wazuh Dashboard (Threat Hunting → Events) or by checking log files on the manager
 
 
 
