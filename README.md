@@ -86,6 +86,65 @@ This ensures your system is up-to-date and installs git (needed to clone the MIS
 git clone https://github.com/MISP/misp-docker.git
 cd misp-docker
 ```
+This pulls down the official Docker configuration maintained by MISP and enters the folder.
+
+### Step 4: Copy the environment configuration template
+
+Inside the misp-docker directory, you’ll find a template environment file. Copy it to create your working .env file:
+```bash
+cp template.env .env 
+```
+Change the **MISP_BASEURL** variable to reflect the IP address of the machine you are running MISP on.
+
+In Terminal: 
+```bash
+nano .env
+```
+<img width="975" height="524" alt="image" src="https://github.com/user-attachments/assets/5b5abde2-d2b0-4e45-878e-7416e2a6840a" />
+
+
+### Step 5: Install Docker and Docker Compose
+If Docker or Docker Compose aren’t installed, install them:
+
+```bash
+apt install docker-compose-v2
+```
+Enable and start Docker:
+
+```bash
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+### Step 6: Next, build the MISP Docker containers with the command:
+```bash
+Docker compose build
+```
+
+<img width="975" height="41" alt="image" src="https://github.com/user-attachments/assets/83f749b6-9efd-4879-86d3-120fa76c39fe" />
+
+This will fetch MISP, MySQL, Redis, and other service images defined in the Docker configuration.
+
+### Step 7: Run MISP using Docker Compose
+
+Start the containers:
+```bash
+sudo docker compose up
+```
+<img width="975" height="46" alt="image" src="https://github.com/user-attachments/assets/571738c0-fba2-4e80-9b3a-9cf0852475c8" />
+(You can also run it in detached mode using -d:
+**sudo docker compose up -d**
+
+### Step 8: Access MISP Web Interface
+  - Open  browser and go to:
+      - https://YOUR_SERVER_IP
+  - you’ll see a warning about SSL — click Advanced → Accept the Risk.
+The MISP login page will appear.
+
+
+
+
+
 
 
 	
