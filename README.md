@@ -162,6 +162,116 @@ After logging in, you can explore the dashboard, create events, and use the MISP
 <img width="894" height="393" alt="image" src="https://github.com/user-attachments/assets/d241e7d1-fb7b-4908-92bc-6147bad13e79" />
 
 
+## Add RestApi :
+
+What the MISP REST API Does?
+The MISP REST API (Representational State Transfer API) allows external systems, scripts, and tools to interact with your MISP instance programmatically — without needing to manually use the web interface.
+You can use it to search, add, modify, or export data such as:
+  - Events
+  - Attributes (indicators of compromise)
+  - Objects
+  - Tags
+  - Sightings
+  - Correlations
+Essentially, it gives you a way to automate threat intelligence exchange between MISP and other systems (like Wazuh, Suricata, or SIEMs).
+
+**/attributes/restSearch** — the endpoint **/attributes/restSearch** is one of the most used MISP API routes.
+It lets you search for attributes (IOCs) based on various filters — like event IDs, types, values, categories, timeframes, or tags.
+Think of it as a “search engine” for all your indicators stored in MISP.
+
+<img width="975" height="416" alt="image" src="https://github.com/user-attachments/assets/fe785ac4-d785-4e6e-b85c-985b5a65aa80" />
+
+
+---
+
+## MISP integration script(Wazuh Manager):
+
+Based on the VirusTotal integration script, we wrote a new script called custom-misp-file-hashes.py. This file must be placed in the **/var/ossec/integrations** directory in the Wazuh Server.
+Download the [custom-misp-file-hashes.py](https://github.com/MISP/wazuh-integration/blob/main/scripts/custom-misp_file_hashes.py) script. After creating the custom-misp_file_hashes.py file in the **/var/ossec/integrations** directory, we have to adjust the file permissions:
+  - chown root:wazuh /var/ossec/integrations/custom-misp_file_hashes.py
+  - chmod 750 /var/ossec/integrations/custom-misp_file_hashes.py
+  - systemctl restart wazuh-manager 
+**configure Wazuh server to use this integration by adding the <integration> block to the **/var/ossec/etc/ossec.conf** file.**
+
+```bash
+
+<ossec_config>
+    <integration>
+        <name>custom-misp_file_hashes.py</name>
+        <hook_url>https://YOUR_MISP_INSTANCE</hook_url>
+        <api_key>YOUR_API_KEY</api_key>
+        <group>syscheck</group>
+        <rule_id>554</rule_id>
+        <alert_format>json</alert_format>
+        <options>{
+              "timeout": 10,
+              "retries": 3,
+              "debug": false,
+              "tags": ["tlp:white", "tlp:clear", "malware"],
+              "push_sightings": true,
+              "sightings_source": "wazuh"
+          }
+        </options>
+    </integration>
+</ossec_config>
+
+```
+
+<img width="975" height="323" alt="image" src="https://github.com/user-attachments/assets/606147d1-16e5-4e60-bc8f-e06f43d911cf" />
+
+## Wazuh rules
+Once we are receiving file creation alerts from our agent and these are being processed by our MISP integration, we need to define some rules in Wazuh.
+In the Wazuh UI, navigate to Server Management → Rules, then click (+) Add new rules file.
+Name the file misp_file_hashes.xml
+Add the following content to the rules file:
+
+```bash
+<group name="misp,malware,">
+    <rule id="100800" level="0">
+        <decoded_as>json</decoded_as>
+        <description>MISP: file hash check</description>
+        <field name="integration">misp_file_hashes</field>
+        <options>no_full_log</options>
+    </rule>
+    <rule id="100801" level="0">
+        <if_sid>100800</if_sid>
+        <field name="misp_file_hashes.found">0</field>
+        <description>MISP: file hash not found</description>
+    </rule>
+    <rule id="100802" level="12">
+        <if_sid>100800</if_sid>
+        <field name="misp_file_hashes.found">1</field>
+        <description>MISP: file hash matched</description>
+    </rule>
+    <rule id="100803" level="10">
+        <if_sid>100800</if_sid>
+        <field name="misp_file_hashes.error">403</field>
+        <description>MISP ERROR: Invalid MISP credentials, check your the api_key setting configured
+            in the MISP integration is valid MISP AuthKey</description>
+    </rule>
+    <rule id="100803" level="10">
+        <if_sid>100800</if_sid>
+        <field name="misp_file_hashes.error">429</field>
+        <description>MISP ERROR: Rate limit exceeded, too many requests</description>
+    </rule>
+    <rule id="100804" level="10">
+        <if_sid>100800</if_sid>
+        <field name="misp_file_hashes.error">500</field>
+        <description>MISP ERROR: $(misp_file_hashes.description)</description>
+    </rule>
+</group>
+```
+
+After saving the rules, restart the Wazuh Manager.
+```bash
+systemctl restart wazuh-manager
+```
+
+<img width="1841" height="864" alt="image" src="https://github.com/user-attachments/assets/c16ba35c-f901-4269-b12a-959a218a352b" />
+<img width="1907" height="826" alt="image" src="https://github.com/user-attachments/assets/cdcb5dbe-9498-4c11-9ab1-1d9b530b0367" />
+<img width="1852" height="874" alt="image" src="https://github.com/user-attachments/assets/71ab6ac3-7e66-461d-8d5d-40b45aa9d0dc" />
+
+---
 
 ## Wazuh and MISP integration
 **Wazuh Host Monitoring**
@@ -174,6 +284,72 @@ Steps:
   - Enable file integrity monitoring for the selected directories
   - Start and verify the agent service
   - Confirm alerts in the Wazuh Dashboard (Threat Hunting → Events) or by checking log files on the manager
+
+<img width="1918" height="910" alt="image" src="https://github.com/user-attachments/assets/9df0140b-5b4b-4e16-aa40-566deb01fab8" />
+
+### Configuring directory monitoring (In Wazuh Agent)
+
+First we need to configure our Wazuh agents(Windows) to enable filesystem monitoring on the directories we are interested in.
+On Ubuntu the agent configuration file is usually located in **/var/ossec/etc/ossec.conf**.
+We can instruct the Wazuh agent to monitor a directory using the <directories> configuration block as follows:
+
+```bash
+<ossec_config>
+  <syscheck>
+    <disabled>no</disabled>
+    <directories check_all="yes" realtime="yes">MONITORED_DIRECTORY_PATH</directories>
+  </syscheck>
+</ossec_config>
+```
+
+<img width="975" height="453" alt="image" src="https://github.com/user-attachments/assets/dd626beb-c5e9-4bc0-9684-2eb10e33c930" />
+
+
+
+## Add Event in Misp Instance
+To trigger a positive match in MISP, add any of the **eicar.com hashes to your MISP instance.
+
+  - MD5: 44d88612fea8a8f36de82e1278abb02f
+  - SHA1: 3395856ce81f2b7382dee72602f798b642f14140
+  - SHA256: 275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f
+
+<img width="975" height="325" alt="image" src="https://github.com/user-attachments/assets/e0dc8f82-0e4c-4aca-b35d-018009f12201" />
+<img width="975" height="412" alt="image" src="https://github.com/user-attachments/assets/a8b98449-b457-46a0-9d45-43cb066f6649" />
+<img width="975" height="415" alt="image" src="https://github.com/user-attachments/assets/c47d25c2-aa82-47ad-a70a-4708a9a0ed94" />
+<img width="889" height="957" alt="image" src="https://github.com/user-attachments/assets/24bc670e-3677-45a7-80f1-84e7d74ba1d9" />
+
+## Test
+
+Download [Eicar.com](https://www.eicar.org/) file to the monitored directory. 
+
+<img width="975" height="448" alt="image" src="https://github.com/user-attachments/assets/b298613b-4f1f-4d0d-af9c-92594cdd8def" />
+<img width="975" height="404" alt="image" src="https://github.com/user-attachments/assets/a6d90c84-c771-4f07-859e-710ae79e6c03" />
+<img width="975" height="310" alt="image" src="https://github.com/user-attachments/assets/a37dab72-10c1-4550-a928-65e2f69d42f1" />
+
+Now:-
+  1. Open Notepad
+    - Press Windows + R, type notepad, and press Enter.
+    <img width="608" height="332" alt="image" src="https://github.com/user-attachments/assets/19af8c92-5ba4-40e0-b93c-9d971d5e7cbb" />
+
+  2. Paste the EICAR test string
+    - In Notepad paste the single line exactly as shown above. Do not add extra spaces, line breaks, or characters.
+
+  3. Save the file with the correct name and encoding
+    - Click File → Save As.
+    - In the Save As dialog:
+    - Navigate to the target monitored directory (if you want it saved directly into the monitored folder).
+    - In File name enter: eicar.com
+    - Set Save as type to All Files (*.*).
+    - Set Encoding to ANSI (this is the same as ASCII for this content).
+    
+
+
+
+
+
+
+
+
 
 
 
