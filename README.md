@@ -67,8 +67,25 @@ Repeat the same for **Ubuntu VM**.
 | **Ubuntu Server (MISP Instance)**    | **Adapter 1: NAT Network**   | Docker image pulls and external feed sync |MISP (Docker), MySQL,MISP REST API access |               
 | **Windows 10 (Wazuh Agent)**        | **Adapter 1: NAT Network**   | Simulates real workstation with internet  | Wazuh Agent, PowerShell, file creation,EICAR test file |
             
-
 ---
+
+## Install MISP with Docker(Ubuntu Server for Misp instance):
+
+### Step 1: Update and install prerequisites-
+
+Open your terminal and run:
+
+```bash
+sudo apt update
+sudo apt install git -y
+```
+This ensures your system is up-to-date and installs git (needed to clone the MISP Docker repository).
+
+### Step 2: Clone the official MISP Docker repository
+```bash
+git clone https://github.com/MISP/misp-docker.git
+cd misp-docker
+```
 
 
 	
