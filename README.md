@@ -51,12 +51,15 @@ Repeat the same for **Windows VM**.
 Repeat the same for **Ubuntu VM**.
 
 ## Ubuntu(MISP) Network Config
+
 <img width="720" height="562" alt="image" src="https://github.com/user-attachments/assets/f55334b7-e52b-461f-ab13-0cd19c29fa7e" />
 
 ## Ubuntu(Wazuh Agent) Network Config
+
 <img width="716" height="559" alt="image" src="https://github.com/user-attachments/assets/e2fa2c85-9658-47c1-98f8-e0e8fb3802a2" />
 
 ## Windows 10(Wazuh Agent) Network Config
+
 <img width="714" height="566" alt="image" src="https://github.com/user-attachments/assets/ef3bdc2d-7eb5-4824-bf4b-cb103e6cff07" />
 
 
@@ -82,6 +85,7 @@ sudo apt install git -y
 This ensures your system is up-to-date and installs git (needed to clone the MISP Docker repository).
 
 ### Step 2: Clone the official MISP Docker repository
+
 ```bash
 git clone https://github.com/MISP/misp-docker.git
 cd misp-docker
@@ -97,9 +101,11 @@ cp template.env .env
 Change the **MISP_BASEURL** variable to reflect the IP address of the machine you are running MISP on.
 
 In Terminal: 
+
 ```bash
 nano .env
 ```
+
 <img width="975" height="524" alt="image" src="https://github.com/user-attachments/assets/5b5abde2-d2b0-4e45-878e-7416e2a6840a" />
 
 
@@ -329,26 +335,57 @@ Download [Eicar.com](https://www.eicar.org/) file to the monitored directory.
 Now:-
   1. Open Notepad
     - Press Windows + R, type notepad, and press Enter.
+     
     <img width="608" height="332" alt="image" src="https://github.com/user-attachments/assets/19af8c92-5ba4-40e0-b93c-9d971d5e7cbb" />
 
-  2. Paste the EICAR test string
+  3. Paste the EICAR test string
     - In Notepad paste the single line exactly as shown above. Do not add extra spaces, line breaks, or characters.
 
-  3. Save the file with the correct name and encoding
+  4. Save the file with the correct name and encoding
     - Click File → Save As.
     - In the Save As dialog:
     - Navigate to the target monitored directory (if you want it saved directly into the monitored folder).
     - In File name enter: eicar.com
     - Set Save as type to All Files (*.*).
     - Set Encoding to ANSI (this is the same as ASCII for this content).
-    
+	- Click Save.
 
+<img width="975" height="408" alt="image" src="https://github.com/user-attachments/assets/4b79511e-259b-44be-a8ea-d3f72fe0a1a2" />
 
+**Alternative: create the file using PowerShell**
+If you want a command-line method instead of Notepad, run PowerShell and execute:
+	- Start Windows Powershel As Admin: Then paste:
 
+```bash
+Set-Content -Path "C:\path\to\monitored\folder\eicar.com" -Value "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*" -Encoding ASCII
+```
 
+Set-Content -Path "C:\path\to\monitored\folder\eicar.com" -Value "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*" -Encoding ASCII
 
+**Note : Replace C:\path\to\monitored\folder\ with the actual path to your monitored directory**
 
+<img width="975" height="145" alt="image" src="https://github.com/user-attachments/assets/6bb41e6f-4b28-4a2a-9e56-3fac77af685c" />
 
+**The EICAR test file was successfully created and saved in the monitored directory.**
+
+## Verify Alert Generation in Wazuh:
+
+After downloading the file:
+
+  - Open the Wazuh Dashboard → Threat Intelligence → Threat Hunting → Events.
+  - Wait for a few moments while the agent scans the directory.
+  - Confirm that alerts are generated for the detected hash indicators.
+
+<img width="975" height="682" alt="image" src="https://github.com/user-attachments/assets/f395ec85-f33e-4a0e-a034-b31cc30d27d1" />
+
+Check the integration script logs in **Wazuh Manager**:
+In terminal –
+
+```bash
+tail -f   /var/ossec/logs/integrations.log
+```
+
+<img width="975" height="319" alt="image" src="https://github.com/user-attachments/assets/b03a0b0c-d742-45b3-a1ff-ae44532a837a" />
 
 
 
