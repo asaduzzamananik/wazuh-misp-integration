@@ -51,14 +51,17 @@ Repeat the same for **Windows VM**.
 Repeat the same for **Ubuntu VM**.
 
 ## Ubuntu(MISP) Network Config
+This screenshot shows the network configuration for the **MISP** server VM running on Ubuntu. The adapter is set to **NAT Network**, allowing MISP to communicate with the Wazuh Manager and Windows Agent within the same virtual network. This setup ensures that the Wazuh Manager can query threat intelligence data from MISP through its REST API while still maintaining internet access for Docker image downloads and feed synchronization.
 
 <img width="720" height="562" alt="image" src="https://github.com/user-attachments/assets/f55334b7-e52b-461f-ab13-0cd19c29fa7e" />
 
-## Ubuntu(Wazuh Agent) Network Config
+## Ubuntu(Wazuh Manager) Network Config
+This screenshot shows the network configuration for the **Wazuh Manager** VM running on Ubuntu. The adapter is set to NAT Network so the Manager can reach both the MISP server and the Windows Agent on the same virtual network. This configuration is required for receiving logs, correlating file integrity alerts, and communicating with agents during threat detection.
 
 <img width="716" height="559" alt="image" src="https://github.com/user-attachments/assets/e2fa2c85-9658-47c1-98f8-e0e8fb3802a2" />
 
 ## Windows 10(Wazuh Agent) Network Config
+This screenshot shows the network configuration for the Windows 10 **Wazuh Agent VM**. The adapter is set to NAT Network, enabling it to connect with the Wazuh Manager over the same internal network. This setup allows real-time monitoring of file activities (like EICAR test file creation) and ensures that alerts are sent to the Manager for analysis and correlation with MISP intelligence.
 
 <img width="714" height="566" alt="image" src="https://github.com/user-attachments/assets/ef3bdc2d-7eb5-4824-bf4b-cb103e6cff07" />
 
